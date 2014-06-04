@@ -13,13 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140603181633) do
 
-  create_table "admin_rate_types", force: true do |t|
-    t.string   "name"
-    t.integer  "unit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "categories", force: true do |t|
     t.string   "name"
     t.text     "description"
@@ -43,15 +36,6 @@ ActiveRecord::Schema.define(version: 20140603181633) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
   end
-
-  create_table "configurables", force: true do |t|
-    t.string   "name"
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "configurables", ["name"], name: "index_configurables_on_name", using: :btree
 
   create_table "contacts", force: true do |t|
     t.string   "full_name"
@@ -137,26 +121,12 @@ ActiveRecord::Schema.define(version: 20140603181633) do
 
   add_index "message_receipts", ["message_id"], name: "index_message_receipts_on_message_id", using: :btree
 
-  create_table "message_reciepts", force: true do |t|
-    t.integer  "receivable_id"
-    t.string   "receivable_type"
-    t.integer  "message_id"
-    t.boolean  "read"
-    t.boolean  "trashed"
-    t.boolean  "deleted"
-    t.string   "mailbox_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "message_reciepts", ["message_id"], name: "index_message_reciepts_on_message_id", using: :btree
-
   create_table "messages", force: true do |t|
     t.string   "type"
-    t.integer  "sender_id"
     t.integer  "conversation_id"
     t.integer  "client_id"
     t.integer  "project_id"
+    t.integer  "sender_id"
     t.string   "sender_type"
     t.string   "notification_code"
     t.integer  "notified_object_id"
@@ -177,7 +147,6 @@ ActiveRecord::Schema.define(version: 20140603181633) do
   add_index "messages", ["contact_id"], name: "index_messages_on_contact_id", using: :btree
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
   add_index "messages", ["project_id"], name: "index_messages_on_project_id", using: :btree
-  add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
   create_table "notes", force: true do |t|
     t.string   "subject"
@@ -202,12 +171,10 @@ ActiveRecord::Schema.define(version: 20140603181633) do
     t.datetime "updated_at"
     t.integer  "category_id"
     t.string   "slug"
-    t.integer  "site_id"
   end
 
   add_index "posts", ["author_id"], name: "index_posts_on_author_id", using: :btree
   add_index "posts", ["category_id"], name: "index_posts_on_category_id", using: :btree
-  add_index "posts", ["site_id"], name: "index_posts_on_site_id", using: :btree
   add_index "posts", ["slug"], name: "index_posts_on_slug", unique: true, using: :btree
 
   create_table "rate_types", force: true do |t|
@@ -261,13 +228,6 @@ ActiveRecord::Schema.define(version: 20140603181633) do
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
-
-  create_table "sites", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "subdomain"
-  end
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
